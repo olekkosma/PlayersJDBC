@@ -16,6 +16,7 @@ public interface PlayerManager {
 	public List<Player> getAllPlayers();
 	public Player findById(long id);
 	public Player findByName(String name);
+	public int addAllPlayersFromList(List<Player> players);
 
 	
 }

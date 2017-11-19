@@ -1,5 +1,8 @@
 package com.example.jdbcdemo.service;
 
+import static org.hamcrest.CoreMatchers.either;
+
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +23,28 @@ public class PlayerManagerTest {
 	
 	@Before
 	 public  void checkAddPlayer(){
-		
 		Player player = new Player(AGE_1,NAME_1,MARKETVALUE_1);
 		assertEquals(1,playerManager.addPlayer(player));
 	 }
 	
 	@Before
 	 public void checkAddMultiplePlayers(){
-		
+		/*
 		assertEquals(1,playerManager.addPlayer(new Player(25,"Ivan Perisic",5500000.1)));
 		assertEquals(1,playerManager.addPlayer(new Player(10,"Ivan Rakitic",4500000.5)));
 		assertEquals(1,playerManager.addPlayer(new Player(45,"Luca Modric",6500000.7)));
 		assertEquals(1,playerManager.addPlayer(new Player(22,"Niejaki Williams",2450000.7)));
+		*/
+		//Transaction implementation
+		ArrayList<Player> playersList = new ArrayList<Player>();
+		playersList.add(new Player(25,"Ivan Perisic",5500000.1));
+		playersList.add(new Player(10,"Ivan Rakitic",4500000.5));
+		playersList.add(new Player(45,"Luca Modric",6500000.7));
+		playersList.add(new Player(22,"Niejaki Williams",2450000.7));
+		//playersList.add(new Player(22,"Niejaki Williams",2450000.7));
+		
+		int addedPlayers = playerManager.addAllPlayersFromList(playersList);
+		assertThat(addedPlayers, either(is(0)).or(is(4))); 
 	 }
 	
 	@Test
