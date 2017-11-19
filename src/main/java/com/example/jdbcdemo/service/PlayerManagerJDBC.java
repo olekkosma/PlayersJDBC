@@ -279,7 +279,61 @@ public class PlayerManagerJDBC implements PlayerManager{
 					numberOfPlayers= 0 ;
 				} catch (SQLException e) {
 					e.printStackTrace();
-					//!!!! ALARM
+				}
+			}
+		return numberOfPlayers;
+	}
+	
+	@Override
+	public int deleteAllPlayersFromList(List<Player> players) {
+		int numberOfPlayers = 0;
+		try {
+	        connection.setAutoCommit(false);
+	       for (Player player : players) {
+	    	   
+	    		if(findByName(player.getName())==null){
+	    			throw new SQLException("cant find player To delte");
+	    			
+	    		}
+	        deletePlayerByNameStatement.setString(1, player.getName());
+			numberOfPlayers += deletePlayerByNameStatement.executeUpdate();
+	        }
+	       connection.commit();
+	      } catch (SQLException exception) {
+				try {
+					connection.rollback();
+					numberOfPlayers= 0 ;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		return numberOfPlayers;
+	}
+	
+	@Override
+	public int updateAllPlayersFromList(List<Player> players) {
+		int numberOfPlayers = 0;
+		try {
+	        connection.setAutoCommit(false);
+	       for (Player player : players) {
+	    	   
+	    		if(findById(player.getId())==null){
+	    			throw new SQLException("cant find player To update");
+	    			
+	    		}
+	    	updatePlayerStatement.setInt(1, player.getAge());
+	  	    updatePlayerStatement.setString(2, player.getName());
+	  	    updatePlayerStatement.setDouble(3, player.getMarketValue());
+	  	    updatePlayerStatement.setLong(4, player.getId());
+			numberOfPlayers += updatePlayerStatement.executeUpdate();
+	        }
+	       connection.commit();
+	      } catch (SQLException exception) {
+				try {
+					connection.rollback();
+					numberOfPlayers= 0 ;
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
 			}
 		return numberOfPlayers;

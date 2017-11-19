@@ -130,6 +130,25 @@ public class PlayerManagerTest {
 	    assertEquals(playerToFind.getMarketValue(), foundedPlayer.getMarketValue(), 0.001);
 	  }
 	
+	@Test
+	  public void checkDeleteAllPlayersFromList() {
+		ArrayList<Player> playersList = new ArrayList<Player>();
+		playersList.add(new Player(25,"Leo Messi",5500000.1));
+		playersList.add(new Player(10,"dddric",4500000.5));
+		int deletedPlayers = playerManager.deleteAllPlayersFromList(playersList);
+		assertThat(deletedPlayers, either(is(0)).or(is(2))); 
+	 }
+	
+	@Test
+	  public void checkUpdateAllPlayersFromList() {
+		ArrayList<Player> playersList = new ArrayList<Player>();
+		Players = playerManager.getAllPlayers();
+		Players.get(Players.size()-2).setName("cristiano Penaldo");
+		Players.get(0).setId(12345);
+		int updatedPlayers = playerManager.updateAllPlayersFromList(playersList);
+		assertThat(updatedPlayers, either(is(0)).or(is(Players.size()))); 
+	 }
+	
 	@After
 	  public void checkDeleteAllPlayers() {
 		playerManager.deleteAllPlayers();
